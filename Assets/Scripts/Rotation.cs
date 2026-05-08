@@ -11,7 +11,7 @@ public class Rotation : MonoBehaviour
     void Start()
     {
         //Upscaled so we don't have to wait a year to see the earth rotate
-        rotationVelocity *= 1000000;
+        rotationVelocity *= 10000;
     }
 
     void FixedUpdate()
