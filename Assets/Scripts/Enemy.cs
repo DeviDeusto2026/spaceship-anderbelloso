@@ -4,15 +4,18 @@ public class Enemy : MonoBehaviour
 {
     Transform player;
     public float velocidad = 10f;
-    public int vidas = 3;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public int vidaMaxima = 3;
+    public int vidas;
+    public EnemyHealthUI barraDeVida;
+
     void Start()
     {
         GameObject playerShip = GameObject.FindGameObjectWithTag("Player");
         if (playerShip != null) player = playerShip.transform;
+        vidas = vidaMaxima;
+        barraDeVida.ActualizarSalud(vidas, vidaMaxima);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (player != null)
@@ -27,13 +30,12 @@ public class Enemy : MonoBehaviour
         if (other.gameObject.CompareTag("Bullet"))
         {
             vidas--;
+            barraDeVida.ActualizarSalud(vidas, vidaMaxima);
             Destroy(other.gameObject);
-            Debug.Log("Vida enemiga restante: " + vidas);
 
             if (vidas <= 0)
             {
-               FindFirstObjectByType<GameManager>().EnemyKilled();
-
+                FindFirstObjectByType<GameManager>().EnemyKilled();
                 Destroy(gameObject);
             }
         }
