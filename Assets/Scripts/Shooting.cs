@@ -19,6 +19,7 @@ public class Shooting : MonoBehaviour
             GameObject go = Instantiate(bullet, gun.position, gun.rotation);
             go.transform.Rotate(90, 0, 0, Space.Self);
             go.GetComponent<Rigidbody>().AddForce(transform.forward * force, ForceMode.Impulse);
+            Destroy(go, 3f);
         }
     }
 }
