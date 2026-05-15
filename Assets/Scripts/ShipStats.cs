@@ -5,10 +5,11 @@ using System.Collections;
 public class ShipStats : MonoBehaviour
 {
     public int vidas = 3;
-    public UI hudCorazones; 
+    public UI hudCorazones;
 
     private bool puedoRecibirDano = true;
     public float tiempoInvulnerable = 1.5f;
+
 
     void Start()
     {
@@ -45,7 +46,8 @@ public class ShipStats : MonoBehaviour
 
         if (vidas <= 0)
         {
-            SceneManager.LoadScene("PlayScene");
+            Time.timeScale = 0f;
+            FindFirstObjectByType<GameManager>().GameOver();
         }
         else
         {

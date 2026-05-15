@@ -1,15 +1,15 @@
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class Boss : MonoBehaviour
 {
     Transform player;
     public float velocidad = 10f;
-    public int vidaMaxima = 20;
+    public int vidaMaxima = 50;
     public int vidas;
     public int navesMenores = 5;
     public EnemyHealthUI barraDeVida;
 
-    private EnemySpawner spawner;
+    public EnemySpawner spawner;
 
     void Start()
     {
@@ -39,7 +39,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
             Destroy(other.gameObject);
             barraDeVida.ActualizarSalud(vidas, vidaMaxima);
 
-            if (vidas > 0 && vidas % 4 == 0 && spawner != null)
+            if (vidas > 0 && vidas % 8 == 0 && spawner != null)
             {
 
                 spawner.IniciarSpawning(navesMenores);

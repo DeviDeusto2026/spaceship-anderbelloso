@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     public float radioSpawn = 50f;
     public float distanciaMinima = 10f;
 
-    private Transform playerTransform;
+    public Transform playerTransform;
     private int enemigosCreados = 0;
     private int maxEnemigos = 0;
 
@@ -48,4 +48,5 @@ public class EnemySpawner : MonoBehaviour
     {
         CancelInvoke("Spawn");
     }
+
 }

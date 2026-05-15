@@ -4,62 +4,106 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
     private int enemigosDerrotados = 0;
     private int killNecesarias = 8;
-    private int bossesDerrotados = 0;
-    private int bossesNecesarios = 1;
+
     public GameObject jefePrefab;
     public Transform puntoSpawnJefe;
     public EnemySpawner spawner;
     public TextMeshProUGUI textoKills;
 
+    public bool jefeInvocado = false;
+    public bool bossKilled = false;
+    private bool victoriaFinal = false;
+
+    public GameObject panelGameOver;
+    public GameObject panelVictoria;
+
     void Start()
     {
         ActualizarInterfaz();
+        if (spawner != null) spawner.IniciarSpawning(killNecesarias);
+    }
 
-        if (spawner != null)
+    void Update()
+    {
+        if (bossKilled && !victoriaFinal)
         {
-            spawner.IniciarSpawning(killNecesarias);
+            GameObject minionVivo = GameObject.FindWithTag("Enemy");
+
+            if (minionVivo == null)
+            {
+                victoriaFinal = true;
+                Debug.Log("¡VICTORIA REAL! Jefe y súbditos eliminados.");
+                Win();
+            }
         }
     }
 
     public void EnemyKilled()
     {
-        enemigosDerrotados++;
-        ActualizarInterfaz();
-
-        if (killNecesarias == enemigosDerrotados)
+        if (enemigosDerrotados < killNecesarias)
         {
-            if (spawner != null)
+            enemigosDerrotados++;
+            ActualizarInterfaz();
+
+            if (enemigosDerrotados == killNecesarias && !jefeInvocado)
             {
-                spawner.DetenerSpawn();
+
+                jefeInvocado = true;
+                if (spawner != null) spawner.DetenerSpawn();
+                Invoke("SpawnBoss", 1f);
             }
-            SpawnBoss();
         }
     }
 
     public void BossKilled()
     {
-        bossesDerrotados++;
-
-        if (bossesNecesarios == bossesDerrotados)
-        {
-            Debug.Log("VICTORY");
-            SceneManager.LoadScene("PlayScene");
-        }
+        bossKilled = true;
+        Debug.Log("El Jefe ha caído. Limpiando restos...");
     }
 
     void ActualizarInterfaz()
     {
         if (textoKills != null)
         {
-            textoKills.text = "Enemigos: " + enemigosDerrotados + " / " + killNecesarias;
+            textoKills.text = "Enemigos restantes: " + (killNecesarias - enemigosDerrotados);
         }
     }
 
     private void SpawnBoss()
     {
         Instantiate(jefePrefab, puntoSpawnJefe.position, puntoSpawnJefe.rotation);
+    }
+
+
+    public void GameOver()
+    {
+        if (victoriaFinal) return;
+
+        panelGameOver.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void Reintentar()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void IrAlMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    void Win()
+    {
+        panelVictoria.SetActive(true);
+        Time.timeScale = 0f;
+
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

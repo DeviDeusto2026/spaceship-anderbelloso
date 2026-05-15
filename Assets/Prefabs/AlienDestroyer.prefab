@@ -156,10 +156,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   velocidad: 10
-  vidaMaxima: 20
+  vidaMaxima: 50
   vidas: 0
   navesMenores: 5
   barraDeVida: {fileID: 1523540470203830820}
+  spawner: {fileID: 0}
 --- !u!1 &2204436404956269111
 GameObject:
   m_ObjectHideFlags: 0
